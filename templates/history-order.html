@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <main>
+    <div class="container">
+        <div class="table-responsive text-nowrap">
+        <h2>Order Summary</h2>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">訂單商品</th>
+                <th scope="col">訂單總金額</th>
+                <th scope="col">狀態</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for order in orders %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>
+                     {% for order_item in order.items.all %}
+                    {{ order_item.item.title }} * {{ order_item.quantity }}<br>
+                    {% endfor %}
+                </td>
+                <td> ${{ order.get_total }}</td>
+                {% if order.delivered %}
+                <td>出貨中</td>
+                {% else %}
+                <td>尚未發貨</td>
+                {% endif %}
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan='4'>尚未成立訂單</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </div>
+  </main>
+
+{% endblock content %}
